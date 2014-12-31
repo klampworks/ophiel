@@ -17,7 +17,7 @@
     (λ (ret) 
       (display ret)
       (newline))
-    (λ () (read-line iport))))
+    (cut read-line iport)))
 
 ;; Given a non-seekable iport, returns each line 
 ;; as a list of strings in revese order.
@@ -25,8 +25,7 @@
   (port-fold 
     cons 
     ()
-    (λ () (read-line iport))))
-
+    (cut read-line iport)))
 
 #|
 (define p (run-process '(ls -l) :output 's))
