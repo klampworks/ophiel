@@ -1,6 +1,8 @@
 (define λ lambda)
 (include "bin-search-file.ss")
 
+(define wordlist "/usr/share/dict/words")
+
 ;; Return the first.lastname part of a string or nothing.
 ;; i.e. "john.smith1992@yahoo.com" -> "john.smith"
 (define (extract-first.last str)
@@ -26,7 +28,7 @@
 
 ;; Returns true if given word appears in standard wordlist.
 (define (known-word? str)
-  (bin-search-file str "/usr/share/dict/words"))
+  (bin-search-file str wordlist))
 
 ;; Given a "first.lastname" pair, return true if either name 
 ;; appears in a standard word list.
