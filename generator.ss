@@ -13,3 +13,13 @@
 			     (filter-known-words 
 			       (filter-first.last 
 				 (iport->strlist in)))))))
+
+(define (gen-name-list-stdout in-file)
+  (for-each
+    (λ (str) (display str) (newline))
+    (gen-name-list in-file)))
+
+(define (gen-name-list-stdout-test)
+  (for-each
+    (λ (str) (display str) (newline))
+    (gen-name-list "names.txt")))
