@@ -39,7 +39,7 @@
 	'() lst))
 
 (define (filter-known-words lst)
-  (filter (λ (word) (not (split-known-word? word))) lst))
+  (remove split-known-word? lst))
 
 (define (filter-valid-names lst)
   (filter (cut split-and valid-name? <>) lst))
