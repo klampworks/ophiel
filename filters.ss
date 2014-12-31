@@ -1,3 +1,5 @@
+(define λ lambda)
+(include "bin-search-file.ss")
 
 ;; Return the first.lastname part of a string or nothing.
 ;; i.e. "john.smith1992@yahoo.com" -> "john.smith"
@@ -16,17 +18,8 @@
 	 (pred? (cadr split)))))
 
 ;; Returns true if given word appears in standard wordlist.
-;; TODO Linear search.
 (define (known-word? str)
   (bin-search-file str "/usr/share/dict/words"))
-#|
-  (call-with-input-file 
-    "/usr/share/dict/words" 
-    (λ (ip)
-       (port-fold 
-	 (λ (a b) 
-	    (or b (string=? str a))) #f (λ () (read-line ip))))))
-|#
 
 ;; Given a "first.lastname" pair, return true if either name 
 ;; appears in a standard word list.
