@@ -17,6 +17,13 @@
     (and (pred? (car split))
 	 (pred? (cadr split)))))
 
+;; TODO, find a way of eliminating common code here. 
+;; Note and and or are macros not functions.
+(define (split-or pred? str)
+  (let ((split (string-split str ".")))
+    (or (pred? (car split))
+	 (pred? (cadr split)))))
+
 ;; Returns true if given word appears in standard wordlist.
 (define (known-word? str)
   (bin-search-file str "/usr/share/dict/words"))
@@ -24,9 +31,7 @@
 ;; Given a "first.lastname" pair, return true if either name 
 ;; appears in a standard word list.
 (define (split-known-word? str)
-  (let ((split (string-split str ".")))
-    (or (known-word? (car split))
-	(known-word? (cadr split)))))
+  (split-or known-word? str))
 
 ;; Given a list of names, return a new list based on the output of
 ;; extract-first.last.
