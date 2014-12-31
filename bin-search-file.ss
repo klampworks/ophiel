@@ -1,12 +1,9 @@
 (define λ lambda)
-(define λ lambda)
 
 (define (cmp-port word iport)
   ;; Throw away first line since we are in the middle of a line.
   (unless (zero? (port-tell iport)) (read-line iport))
   (let ((line (read-line iport)))
-    ;;(display word) (display " x ") (display line) (newline)
-    ;;(newline)
     (cond
       ((eof-object? line) -2)
       ((string=? word line) 0)
@@ -17,9 +14,6 @@
 
 (define (bin-search-iport word iport st en)
   (let ((pos (div (+ st en) 2)))
-    ;;(display "Pos: ") (display pos) (newline)
-    ;;(display "St ") (display st) (newline)
-    ;;(display "En ") (display en) (newline)
       (port-seek iport pos)
       (let ((res (cmp-port word iport)))
         (cond
