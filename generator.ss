@@ -1,4 +1,4 @@
-(import (srfi-26))
+(use srfi-26)
 (define λ lambda)
 (include "filters.ss")
 
