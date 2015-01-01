@@ -1,5 +1,6 @@
 (use srfi-37)
 (define λ lambda)
+(include "generator.ss")
 
 (define (usage script-name)
   (display #"Usage: ~|script-name| -i <input-file>\n"))
@@ -20,5 +21,5 @@
                  (display #"Ignoring operand ~|operand|.\n")
 		 (values input-file))
                "")
-     (print "input-file = " input-file)
+     (gen-name-list-stdout input-file)
      0))
