@@ -1,5 +1,6 @@
 (import (srfi-26))
 (define λ lambda)
+(include "filters.ss")
 
 ;; Given a non-seekable iport, returns each line 
 ;; as a list of strings in revese order.
