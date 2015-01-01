@@ -1,23 +1,21 @@
 (use srfi-37)
 
 (define options
- (list (option '(#\I "include") #t #f
-               (lambda (option name arg paths files)
-                 (values paths files)))))
+ (list (option '(#\i "input") #t #f
+               (lambda (option name arg in)
+                 (values arg)))))
 
 (define (main args)
-  (receive (include-paths files)
+  (receive (in-)
     (args-fold (cdr args)
                options
                (lambda (option name arg . seeds)         ; unrecognized
                  (error "Unrecognized option:" name))
-               (lambda (operand paths files) ; operand
+               (lambda (operand in) ; operand
                  (display #"Ignoring operand ~|operand|.\n")
-		 (values paths files))
-               '()    ; initial value of include paths
+		 (values in))
                '()    ; initial value of include paths
                )
-     (print "include paths = " (reverse include-paths))
-     (print "files = " (reverse files))
+     (print "input-file = " in-)
      0))
 
