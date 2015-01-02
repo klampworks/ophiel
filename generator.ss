@@ -1,5 +1,6 @@
 (use srfi-26)
 (use srfi-27)
+(use srfi-19)
 (define λ lambda)
 (include "filters.ss")
 
@@ -47,3 +48,22 @@
 
 (define (pick-lname in-file)
   (cadr (split (pick-name in-file))))
+
+(define (gen-year range)
+  (random-source-randomize! default-random-source)
+  (let* ((split-range (string-split range #\-))
+	(d-min (string->number (car split-range)))
+	(d-max (string->number (cadr split-range)))
+	(diff (- d-max d-min)))
+    (- (date-year (current-date)) (+ d-min (random-integer diff)))))
+
+(define (gen-month)
+  (random-source-randomize! default-random-source)
+  (+ 1 (random-integer 11)))
+
+(define (gen-day)
+  (random-source-randomize! default-random-source)
+  (+ 1 (random-integer 28)))
+
+(define (gen-dob range)
+  #"~(gen-year range).~(gen-month).~(gen-day)")
