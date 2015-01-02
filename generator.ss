@@ -44,3 +44,6 @@
 
 (define (pick-fname in-file)
   (car (split (pick-name in-file))))
+
+(define (pick-lname in-file)
+  (cadr (split (pick-name in-file))))
