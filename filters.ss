@@ -14,15 +14,19 @@
 (define (valid-name? str)
   (rxmatch #/[aeiou]/i str))
 
+;; Splits a string with delimiter '.' and returns a pair.
+(define (split str)
+  (string-split str "."))
+
 (define (split-and pred? str)
-  (let ((split (string-split str ".")))
+  (let ((split (split str)))
     (and (pred? (car split))
 	 (pred? (cadr split)))))
 
 ;; TODO, find a way of eliminating common code here. 
 ;; Note and and or are macros not functions.
 (define (split-or pred? str)
-  (let ((split (string-split str ".")))
+  (let ((split (split str)))
     (or (pred? (car split))
 	 (pred? (cadr split)))))
 

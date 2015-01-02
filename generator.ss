@@ -43,4 +43,4 @@
 	     (else tmp)))))))
 
 (define (pick-fname in-file)
-  (car (string-split (pick-name in-file) ".")))
+  (car (split (pick-name in-file))))
