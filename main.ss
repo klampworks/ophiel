@@ -1,6 +1,7 @@
 (use srfi-37)
 (define λ lambda)
 (include "generator.ss")
+(random-source-randomize! default-random-source)
 
 (define (usage script-name)
   (display #"Usage: ~|script-name| -gnfl -e <domain.com> -d <21-50> -i <input-file>\n")

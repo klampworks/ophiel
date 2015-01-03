@@ -30,7 +30,6 @@
     (gen-name-list "names.txt")))
 
 (define (pick-name in-file)
-  (random-source-randomize! default-random-source)
   (call-with-input-file 
     in-file 
     (λ (in) 
@@ -51,7 +50,6 @@
   (cadr (split (pick-name in-file))))
 
 (define (gen-year range)
-  (random-source-randomize! default-random-source)
   (let* ((split-range (string-split range #\-))
 	(d-min (string->number (car split-range)))
 	(d-max (string->number (cadr split-range)))
@@ -59,11 +57,9 @@
     (- (date-year (current-date)) (+ d-min (random-integer diff)))))
 
 (define (gen-month)
-  (random-source-randomize! default-random-source)
   (+ 1 (random-integer 11)))
 
 (define (gen-day)
-  (random-source-randomize! default-random-source)
   (+ 1 (random-integer 28)))
 
 (define (gen-dob range)
