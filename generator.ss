@@ -1,6 +1,7 @@
 (use srfi-26)
 (use srfi-27)
 (use srfi-19)
+(use rfc.md5)
 (define λ lambda)
 (include "filters.ss")
 
@@ -67,3 +68,35 @@
 
 (define (gen-dob range)
   #"~(gen-year range).~(gen-month).~(gen-day)")
+
+(define (pick-word-stupid l-min l-max)
+  (let* ((t (pick-name wordlist))
+	 (len (string-length t)))
+    (if (or (< len l-min) (> len l-max))
+      (gen-email)
+      t)))
+
+(define (pick-word-mangled l-min l-max)
+  (let* ((t (pick-name wordlist))
+	 (len (string-length t)))
+    (cond
+      ((> len l-max) (substring t 0 l-max))
+      ((< len l-min) 
+       (string-append t (pick-word-mangled (- l-min len) (- l-max len))))
+      (else t))))
+
+(define (gen-number-32)
+  (digest-hexify (md5-digest-string (date->string (current-date) "~s"))))
+
+(define (gen-number digits)
+  (let* ((t (gen-number-32))
+	(len (string-length t)))
+    (cond
+      ((> len digits) (substring t 0 digits))
+      (( < len digits)
+       (string-append t (gen-number (- digits len))))
+      (else t))))
+
+(define (gen-email domain)
+  #"~(pick-word-mangled 10 12)~(gen-number 4)@~|domain|")
+
