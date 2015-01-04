@@ -96,3 +96,11 @@
 (define (gen-email domain)
   #"~(pick-word-mangled 10 12)~(gen-number 4)@~|domain|")
 
+(define street-endings
+  '("road" "avenue" "close" "gardens" "street"))
+
+(define (pick-street-ending)
+  (list-ref street-endings (random-integer (length street-endings))))
+
+(define (gen-addr)
+  #"~(random-integer 100) ~(pick-word-stupid 3 20) ~(pick-street-ending)")
