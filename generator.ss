@@ -104,3 +104,12 @@
 
 (define (gen-addr)
   #"~(random-integer 100) ~(pick-word-stupid 3 20) ~(pick-street-ending)")
+
+(define (gen-letter)
+  (integer->char (+ 1 (char->integer #\a) (random-integer 26))))
+
+;;Basic post code of the format "ab1 2cd"
+(define (gen-pcode)
+  (string-append #"~(gen-letter)~(gen-letter)~(random-integer 10) "
+		 #"~(random-integer 10)~(gen-letter)~(gen-letter)"))
+
