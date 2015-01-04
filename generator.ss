@@ -117,6 +117,12 @@
 		 #"~(random-integer 10)~(gen-letter)~(gen-letter)"))
 
 (include "uk-counties.ss")
+
 (define (pick-county)
   (pick-list-item uk-counties))
+
+(define (gen-addr)
+  (let ((pc (pick-list-item uk-pc-counties)))
+    (string-append #"~(cadr pc)\n~(car pc)~(random-integer 10) "
+		   #"~(random-integer 10)~(gen-letter)~(gen-letter)")))
 
