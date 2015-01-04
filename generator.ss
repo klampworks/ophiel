@@ -105,7 +105,7 @@
 (define (pick-street-ending)
   (pick-list-item street-endings))
 
-(define (gen-addr)
+(define (gen-street)
   #"~(random-integer 100) ~(pick-word-stupid 3 20) ~(pick-street-ending)")
 
 (define (gen-letter)
