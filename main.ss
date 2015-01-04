@@ -72,24 +72,16 @@
                (λ (operand gen name fname lname dob email addr pcode input-file)
                  (display #"Ignoring operand ~|operand|.\n")
 		 (values gen name fname lname dob email addr pcode input-file))
-	       #f
-	       #f
-	       #f
-	       #f
-	       #f
-	       #f 
-	       #f
-	       #f
-               ""
+	       #f #f #f #f #f #f  #f #f #f
 	       )
-    (cond
-      (gen (gen-name-list-stdout input-file))
-      (name (display (pick-name input-file)) (newline))
-      (fname (display (pick-fname input-file)) (newline))
-      (lname (display (pick-lname input-file)) (newline))
-      (dob (display (gen-dob dob)) (newline))
-      (email (display (gen-email email)) (newline))
-      (addr (display (gen-addr)) (newline))
-      (pcode (display (gen-pcode)) (newline))
-      (else (display dob) (display "No action specified.\n") (usage (car args))))
+      (when gen (gen-name-list-stdout input-file))
+      (when name (display (pick-name input-file)) (newline))
+      (when fname (display (pick-fname input-file)) (newline))
+      (when lname (display (pick-lname input-file)) (newline))
+      (when dob (display (gen-dob dob)) (newline))
+      (when email (display (gen-email email)) (newline))
+      (when addr (display (gen-addr)) (newline))
+      (when pcode (display (gen-pcode)) (newline))
+      (unless (or gen name fname lname dob email addr pcode)
+	(display "No action specified.\n") (usage (car args)))
      0))
