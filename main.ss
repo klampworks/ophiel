@@ -4,7 +4,7 @@
 (random-source-randomize! default-random-source)
 
 (define (usage script-name)
-  (display #"Usage: ~|script-name| -gnflap -e <domain.com> -d <21-50> -i <input-file>\n")
+  (display #"Usage: ~|script-name| -gnflapc -e <domain.com> -d <21-50> -i <input-file>\n")
   (display "-g\t--gen\tGenerate a name list from input file.\n")
   (display "-n\t--name\tPick a name at random from input file.\n")
   (display "-f\t--fname\tPick a first name at random from input file.\n")
@@ -13,66 +13,81 @@
   (display "-e\t--email\tGenerate a random email address using given domain.\n")
   (display "-a\t--addr\tGenerate a random physical address.\n")
   (display "-p\t--pcode\tGenerate a random UK post code.\n")
+  (display "-c\t--county\tSelect a random UK county.\n")
   (display "-i\t--input\tInput file.\n"))
 
 (define options
  (list (option '(#\i "input") #t #f
-               (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
-                 (values gen name fname lname dob email addr pcode arg)))
+               (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
+                 (values gen name fname lname dob email addr pcode county arg)))
+       (option '(#\c "county") #f #f
+               (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
+                 (values gen name fname lname dob email addr pcode #t 
+			 input-file)))
        (option '(#\p "pcode") #f #f
-               (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
-                 (values gen name fname lname dob email addr #t input-file)))
+               (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
+                 (values gen name fname lname dob email addr #t county 
+			 input-file)))
        (option '(#\a "addr") #f #f
-               (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
-                 (values gen name fname lname dob email #t pcode input-file)))
+               (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
+                 (values gen name fname lname dob email #t pcode county 
+			 input-file)))
        (option '(#\e "email") #f #t
                (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
+			  lname dob email addr pcode county input-file)
 		  (if arg
-		    (values gen name fname lname dob arg addr pcode input-file)
-		    (values gen name fname lname dob 
-			    "puppies.com" addr pcode input-file))))
+		    (values gen name fname lname dob arg addr pcode county 
+			    input-file)
+		    (values gen name fname lname dob "puppies.com" addr 
+			    pcode county input-file))))
        (option '(#\d "dob") #f #t
-               (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
+               (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
                (cond
 		 ((and arg (rxmatch #/^\d+-\d+$/ arg))
-		  (values gen name fname lname arg email addr pcode input-file))
-		 ((not arg) (values gen name fname 
-				    lname "21-50" email addr pcode input-file))
+		  (values gen name fname lname arg email addr pcode county 
+			  input-file))
+		 ((not arg) (values gen name fname lname "21-50" email addr 
+				    pcode county input-file))
 		 (else (display "Expected dob range of format /^\d+-\d+$/.\n")
-		  (values gen name fname lname "21-50" email addr pcode input-file)))))
+		  (values gen name fname lname "21-50" email addr pcode county 
+			  input-file)))))
        (option '(#\l "lname") #f #f
-               (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
-                 (values gen name fname #t dob email addr pcode input-file)))
+               (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
+                 (values gen name fname #t dob email addr pcode county 
+			 input-file)))
        (option '(#\f "fname") #f #f
-               (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
-                 (values gen name #t lname dob email addr pcode input-file)))
+               (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
+                 (values gen name #t lname dob email addr pcode county 
+			 input-file)))
        (option '(#\n "name") #f #f
-               (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
-                 (values gen #t fname lname dob email addr pcode input-file)))
+               (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
+                 (values gen #t fname lname dob email addr pcode county 
+			 input-file)))
        (option '(#\g "gen") #f #f
-	       (λ (option arg-name arg gen name fname 
-			  lname dob email addr pcode input-file)
-		  (values #t name fname lname dob email addr pcode input-file)))))
+	       (λ (option arg-name arg gen name fname lname dob email addr 
+			  pcode county input-file)
+		  (values #t name fname lname dob email addr pcode county 
+			  input-file)))))
 
 (define (main args)
-  (receive (gen name fname lname dob email addr pcode input-file)
+  (receive (gen name fname lname dob email addr pcode county input-file)
     (args-fold (cdr args)
                options
                (λ (option name arg . seeds)
                  (display #"Unrecognised option: ~|name|\n")
 		 (usage (car args)))
-               (λ (operand gen name fname lname dob email addr pcode input-file)
+               (λ (operand gen name fname lname dob email addr pcode county input-file)
                  (display #"Ignoring operand ~|operand|.\n")
-		 (values gen name fname lname dob email addr pcode input-file))
-	       #f #f #f #f #f #f  #f #f #f
+		 (values gen name fname lname dob email addr pcode county input-file))
+	       #f #f #f #f #f #f  #f #f #f #f
 	       )
       (when gen (gen-name-list-stdout input-file))
       (when name (display (pick-name input-file)) (newline))
@@ -81,7 +96,8 @@
       (when dob (display (gen-dob dob)) (newline))
       (when email (display (gen-email email)) (newline))
       (when addr (display (gen-addr)) (newline))
+      (when county (display (pick-county)) (newline))
       (when pcode (display (gen-pcode)) (newline))
-      (unless (or gen name fname lname dob email addr pcode)
+      (unless (or gen name fname lname dob email addr pcode county)
 	(display "No action specified.\n") (usage (car args)))
      0))

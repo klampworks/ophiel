@@ -99,8 +99,11 @@
 (define street-endings
   '("road" "avenue" "close" "gardens" "street"))
 
+(define (pick-list-item lst)
+  (list-ref lst (random-integer (length lst))))
+
 (define (pick-street-ending)
-  (list-ref street-endings (random-integer (length street-endings))))
+  (pick-list-item street-endings))
 
 (define (gen-addr)
   #"~(random-integer 100) ~(pick-word-stupid 3 20) ~(pick-street-ending)")
@@ -112,4 +115,8 @@
 (define (gen-pcode)
   (string-append #"~(gen-letter)~(gen-letter)~(random-integer 10) "
 		 #"~(random-integer 10)~(gen-letter)~(gen-letter)"))
+
+(include "uk-counties.ss")
+(define (pick-county)
+  (pick-list-item uk-counties))
 
