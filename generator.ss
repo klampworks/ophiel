@@ -2,6 +2,7 @@
 (use srfi-27)
 (use srfi-19)
 (use rfc.md5)
+(use srfi-13)
 (define λ lambda)
 (include "filters.ss")
 
@@ -126,3 +127,29 @@
     (string-append #"~(cadr pc)\n~(car pc)~(random-integer 10) "
 		   #"~(random-integer 10)~(gen-letter)~(gen-letter)")))
 
+(define (string-sub str old new)
+  (string-map (λ (c) (if (char=? c old) new c)) str))
+
+(define (string-capitalise str)
+  (letrec ((sc (λ (str flag acc)
+		  (if (null? str) 
+		    (list->string (reverse acc))
+		    (let ((c (car str)))
+		      (if flag
+		        (if (char-alphabetic? c) 
+		      	  (sc (cdr str) #f (cons (char-upcase c) acc))
+			  (sc (cdr str) #t (cons c acc)))
+		        (if (not (char-alphabetic? c))
+			  (sc (cdr str) #t (cons c acc))
+			  (sc (cdr str) #f (cons c acc)))))))))
+    (sc (string->list str) #t '())))
+
+
+(define (gen-hostname hostname input-file)
+  (let ((username 
+	  (string-capitalise (string-sub (pick-name input-file) #\. #\-))))
+    (cond
+      ((string-ci=? hostname "osx")
+       #"~|username|s-Macbook-Pro")
+      (else 
+	#"~|username|s-PC"))))
