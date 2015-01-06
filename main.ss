@@ -1,5 +1,4 @@
 (use srfi-37)
-(define λ lambda)
 (include "generator.ss")
 (random-source-randomize! default-random-source)
 
@@ -14,7 +13,6 @@
   (display "-s\t--street\tGenerate a random physical streetess.\n")
   (display "-p\t--pcode\tGenerate a random UK post code.\n")
   (display "-c\t--county\tSelect a random UK county.\n")
-  (display "-a\t--addr\tSelect a someway coherent UK county and post code combination.\n")
   (display "-a\t--addr\tSelect a someway coherent UK county and post code combination.\n")
   (display "-h\t--hostname\tGenerate a computer hostname.\n")
   (display "-i\t--input\tInput file.\n"))
