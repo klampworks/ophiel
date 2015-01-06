@@ -63,7 +63,7 @@ Counties are selected from a hardcoded list since there aren't so many.
     $ ./ophiel -c
     Warwickshire
 
-The first post code option generated nonsense post codes which conform to the formatting convention. 
+The first post code option generates nonsense post codes which conform to the formatting convention. 
 
     $ ./ophiel -p
     UG1 9VW
@@ -79,8 +79,15 @@ Names
 
 The following options require an input file of names.
 
-For example: in.txt
+For example:
 
+    jeremy.usborne
+    alan.johnson
+    gerrard.matthew
+
+Such a file can be generated from a email + password dumps which are unfortunately quite commonplace these days. Anything that looks like a firstname.lastname combination is parsed out. Several filters are used to avoid strings that are obviously not names for example dictionary words or words without vowels.
+
+    $ cat in.txt
     mark.corrigan@puppies.com
     jeremy.usborne123@puppies.com
     123alan.johnson@puppies.com
@@ -89,14 +96,12 @@ For example: in.txt
     big.suze@puppies.com
     dobby.zzz@puppies.com
     
-Such a file can be generated from a email + password dumps which are unfortunately quite commonplace these days. Anything that looks like a firstname.lastname combination is parsed out. Several filters are used to avoid strings that are obviously not names for example dictionary words or words without vowels.
-
     $ ./ophiel -g -i in.txt | tee out.txt 
     jeremy.usborne
     alan.johnson
     gerrard.matthew
 
-Mark was rejected because "mark" is also a dictionary word. This is a false positive however under the same rules "Super Hans" and "Big Suse" are also rejected which is correct because they obviously are not real names. Dobby is also rejected because "zzz" is obviously not a value name (no vowels). Typical database leaks contain millions of email addresses so plenty of valid names can be teased out. Generating this output can take a few seconds to a few minutes depending on the number of records. The largest file I tested was a 2,096,995 line input file which produced a 107,939 line output file in 32 seconds.
+Mark was rejected because "mark" is also a dictionary word. This is a false positive however under the same rules "Super Hans" and "Big Suse" are also rejected which is correct because they are not real names. Dobby is also rejected because "zzz" is obviously not a valid name (no vowels). Typical database leaks contain millions of email addresses so plenty of valid names can be teased out. Generating this output can take a few seconds to a few minutes depending on the number of records. The largest file I tested was a 2,096,995 line input file which produced a 107,939 line output file in 32 seconds.
 
 With this output we can generate realistic names. Names are selected at random and pulled out from the file using a binary search so even with millions of records the process is still very quick (less than a second).
 
