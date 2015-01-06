@@ -23,6 +23,8 @@ Example
     PL2 3YN
     Alan-Johnsons-Macbook-Pro
 
+Developed and tested with [Gauche](http://practical-scheme.net/gauche/) but should work with any Scheme implementation.
+
 Date of Birth
 ==
 
