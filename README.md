@@ -15,9 +15,10 @@ Supports generating
 
 Example
 
-    $ ./ophiel -nsa -d --hostname=osx -i out.txt 
+    $ ./ophiel -nsa -d --hostname=osx --email=hmail.com -i out.txt 
     alan.johnson
     1969.10.18
+    tapirpulmoga8865@hmail.com
     61 beggarliness close
     Plymouth
     PL2 3YN
